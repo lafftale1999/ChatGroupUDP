@@ -61,6 +61,10 @@ public class ChatReceiverProtocol {
                 // IF USER IS ACTIVE AND NOT IN THE USER LIST - ADD TO USER LIST
                 if (user.isActive() && !chatWindow.getChatAreaPanel().getUserTextArea().getUsers().contains(user.getUserName())) {
                     chatWindow.getChatAreaPanel().getUserTextArea().addUser(user);
+
+                    // DEBUG
+                    System.out.println("User added");
+
                 }
                 else if(!user.isActive()) {
                     chatWindow.getChatAreaPanel().getUserTextArea().removeUser(user);

@@ -110,7 +110,7 @@ public class ChatReceiverSender implements ActionListener {
 
             // SEND PACKETS
             socket.send(userPacket);
-
+            System.out.println("Handshake sent");
         } catch (JsonProcessingException e) {
             System.out.println("Error mapping currentUser as json");
         } catch (IOException e) {
