@@ -6,6 +6,8 @@ public class User {
     private String userName;
     private boolean isActive;
 
+    public User() {}
+
     public User(String userName) {
         this.userName = userName;
         this.isActive = true;

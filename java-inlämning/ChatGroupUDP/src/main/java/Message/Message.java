@@ -4,12 +4,13 @@ import User.User;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 public class Message {
     private String message;
     private String date;
     private User user;
+
+    public Message() {}
 
     public Message(String message, User user) {
         this.message = message;
@@ -33,6 +34,10 @@ public class Message {
 
     public String getDate() {
         return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public User getUser() {

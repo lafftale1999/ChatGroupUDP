@@ -19,6 +19,7 @@ public class ChatTextArea extends JTextArea {
         this.append(tempMessage);
         this.setCaretPosition(this.getDocument().getLength());
         this.draw();
+        System.out.println("Message added");
     }
 
     public void draw(){

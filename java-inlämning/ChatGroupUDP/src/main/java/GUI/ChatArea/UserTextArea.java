@@ -1,6 +1,7 @@
 package GUI.ChatArea;
 
 import User.User;
+import User.Users;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,13 +17,26 @@ public class UserTextArea extends JTextArea {
         this.setCaretColor(Color.WHITE);
     }
 
+    public void initializeUsers(Users users) {
+        for(User user : users.getUsers()) {
+            this.users.add(user.getUserName());
+        }
+        System.out.println("users initialized");
+        this.draw();
+    }
+
     public void addUser(User user) {
         users.add(user.getUserName());
         this.draw();
     }
 
+    public void removeUser(User user) {
+        users.remove(user.getUserName());
+        this.draw();
+    }
+
     public void draw(){
-        this.setText("");
+        this.setText("Users online:\n");
 
         for(String user: users) {
             this.append(user + "\n");

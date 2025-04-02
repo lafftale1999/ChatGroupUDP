@@ -19,11 +19,12 @@ public class ChatReceiver {
                 break;
             }
         }
-
     }
 
     public static void main(String[] args) {
         ChatReceiver chatReceiver = new ChatReceiver();
-        ChatReceiverProtocol chatReceiverProtocol = new ChatReceiverProtocol(chatReceiver.chatWindow);
+        ChatReceiverSender chatReceiverSender = new ChatReceiverSender(chatReceiver.chatWindow, chatReceiver.currentUser);
+        ChatReceiverListener chatReceiverListener = new ChatReceiverListener(chatReceiver.chatWindow, chatReceiver.currentUser);
+        chatReceiverListener.start();
     }
 }
