@@ -6,6 +6,7 @@ import User.User;
 import User.Users;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ChatReceiverProtocol {
@@ -27,17 +28,14 @@ public class ChatReceiverProtocol {
     public void runProtocol(String jsonString) {
         if (state == States.READY_TO_RECEIVE) {
             this.doAction(jsonString);
-            System.out.println("Ready to receive: " + jsonString);
         }
         else if (state == States.INITIALIZE) {
             ObjectMapper mapper = new ObjectMapper();
-            System.out.println("Outside INITIALIZE: " + jsonString);
 
             if(jsonString.contains("\"users\"") && !jsonString.contains("\"message\"")) {
-                System.out.println("Inside INITIALIZE: " + jsonString);
                 try {
                     Users users = mapper.readValue(jsonString, Users.class);
-                    chatWindow.getChatAreaPanel().getUserTextArea().initializeUsers(users);
+                    chatWindow.getChatAreaPanel().getUserTextArea().updateUsers(users);
                     state = States.READY_TO_RECEIVE;
                 } catch (JsonMappingException e) {
                     e.printStackTrace();
@@ -52,8 +50,13 @@ public class ChatReceiverProtocol {
         // received a message
         ObjectMapper mapper = new ObjectMapper();
         try{
-            // USER
-            if(jsonString.contains("\"userName\"") && !jsonString.contains("\"message\"")) {
+            JsonNode root = mapper.readTree(jsonString);
+
+            if(root.has("users")) {
+                Users users = mapper.readValue(jsonString, Users.class);
+                chatWindow.getChatAreaPanel().getUserTextArea().updateUsers(users);
+            }
+            else if(root.has("user") && !root.has("message")) {
                 User user = mapper.readValue(jsonString, User.class);
                 // IF USER IS ACTIVE AND NOT IN THE USER LIST - ADD TO USER LIST
                 if (user.isActive() && !chatWindow.getChatAreaPanel().getUserTextArea().getUsers().contains(user.getUserName())) {
@@ -63,9 +66,7 @@ public class ChatReceiverProtocol {
                     chatWindow.getChatAreaPanel().getUserTextArea().removeUser(user);
                 }
             }
-            // MESSAGE
-            else if (jsonString.contains("\"message\"") && jsonString.contains("\"date\"")) {
-                // MESSAGE STUFF
+            else if(root.has("message") && root.has("date")) {
                 System.out.println("First in doAction");
                 Message message = mapper.readValue(jsonString, Message.class);
                 if(message != null) {

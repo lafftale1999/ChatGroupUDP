@@ -108,19 +108,11 @@ public class ChatReceiverSender implements ActionListener {
             byte[] userBytes = json.getBytes();
             DatagramPacket userPacket = new DatagramPacket(userBytes, userBytes.length, serverAddress, toPort);
 
-            // CREATE HELLO PACKET
-            byte[] bytes = "Chat!Sender#HandShake%".getBytes();
-            DatagramPacket helloPacket = new DatagramPacket(bytes, bytes.length, serverAddress, toPort);
-
             // SEND PACKETS
             socket.send(userPacket);
-            Thread.sleep(10);
-            socket.send(helloPacket);
 
         } catch (JsonProcessingException e) {
             System.out.println("Error mapping currentUser as json");
-        } catch (InterruptedException e) {
-            System.out.println("Thread is interrupted");
         } catch (IOException e) {
             System.out.println("Unknown error");
         }

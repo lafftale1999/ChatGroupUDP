@@ -17,11 +17,12 @@ public class UserTextArea extends JTextArea {
         this.setCaretColor(Color.WHITE);
     }
 
-    public void initializeUsers(Users users) {
+    public void updateUsers(Users users) {
+        this.setText("");
+        this.setText("Users online:\n");
         for(User user : users.getUsers()) {
             this.users.add(user.getUserName());
         }
-        System.out.println("users initialized");
         this.draw();
     }
 
