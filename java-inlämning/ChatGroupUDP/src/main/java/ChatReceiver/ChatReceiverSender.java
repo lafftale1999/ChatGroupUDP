@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -72,8 +73,19 @@ public class ChatReceiverSender implements ActionListener {
             byte[] bytes = json.getBytes();
             DatagramPacket packet = new DatagramPacket(bytes, bytes.length, serverAddress, toPort);
             socket.send(packet);
+
+            Thread.sleep(50);
+
+            Message message = new Message(currentUser.getUserName() + " has left the chat", currentUser);
+            json = mapper.writeValueAsString(message);
+            bytes = json.getBytes();
+            DatagramPacket messagePacket = new DatagramPacket(bytes, bytes.length, serverAddress,toPort);
+            socket.send(packet);
+
         } catch (IOException ex) {
             throw new RuntimeException(ex);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

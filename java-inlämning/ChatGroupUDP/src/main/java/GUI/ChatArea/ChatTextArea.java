@@ -15,11 +15,17 @@ public class ChatTextArea extends JTextArea {
     }
 
     public void addMessage(Message message) {
-        String tempMessage = message.getUser().getUserName() + " " + message.getDate() + ": " + message.getMessage() + "\n";
+        String tempMessage;
+        if(message.getUser().isActive()) {
+            tempMessage = message.getUser().getUserName() + " " + message.getDate() + ": " + message.getMessage() + "\n";
+        }
+        else {
+            tempMessage = message.getMessage();
+        }
+
         this.append(tempMessage);
         this.setCaretPosition(this.getDocument().getLength());
         this.draw();
-        System.out.println("Message added");
     }
 
     public void draw(){
