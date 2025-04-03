@@ -13,8 +13,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ChatSenderMulticast extends Thread{
-
+    //Thread-safe queue that handles all output tasks
     BlockingQueue<Runnable> tasks = new LinkedBlockingQueue<>();
+
     int toPort = 55554;
     MulticastSocket socket = new MulticastSocket();
     InetAddress multiCastAddress;
@@ -23,6 +24,7 @@ public class ChatSenderMulticast extends Thread{
         multiCastAddress = InetAddress.getByName("234.234.234.234");
     }
 
+    // Thread-safe method to send Objects
     public synchronized void send(Object object) {
         ObjectMapper mapper = new ObjectMapper();
         String json = null;
@@ -43,7 +45,6 @@ public class ChatSenderMulticast extends Thread{
 
         if(json != null) {
             String finalJson = json;
-            System.out.println("Before adding to task: " + finalJson);
             addTask(() -> sendObject(finalJson));
         }
     }
@@ -53,9 +54,9 @@ public class ChatSenderMulticast extends Thread{
         DatagramPacket packet = new DatagramPacket(bytes, bytes.length, multiCastAddress, toPort);
         try {
             socket.send(packet);
-            System.out.println("packet sent");
+            System.out.println("Packet sent");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("ChatSenderMulticast sendObject() - failed to send object: " + e.getMessage());
         }
     }
 
@@ -71,7 +72,7 @@ public class ChatSenderMulticast extends Thread{
                 task.run();
             }
         } catch (InterruptedException e) {
-            System.out.println("Thread interrupted, ending program");
+            System.out.println("ChatSenderMulticast run() - Thread interrupted, ending program: " + e.getMessage());
         } finally {
             socket.close();
         }

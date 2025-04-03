@@ -19,9 +19,8 @@ public class ChatSenderProtocol {
         try {
             chatSenderMulticast = new ChatSenderMulticast();
         } catch (IOException e) {
-            System.out.println("Failed to create chatSenderMulticast");
+            System.out.println("ChatSenderProtocol Constructor() - Failed to create ChatSenderMulticast: " + e.getMessage());
         }
-
         chatSenderMulticast.start();
     }
 
@@ -29,31 +28,28 @@ public class ChatSenderProtocol {
         ObjectMapper mapper = new ObjectMapper();
         Object object = null;
 
-        System.out.println("In protocol: " + jsonString);
-
         try {
             JsonNode root = mapper.readTree(jsonString);
 
-            // CHECK IF USER
-            if(root.has("userName")) {
+            // IF USER
+            if(root.has("userName") && !root.has("message")) {
                 User newUser = mapper.readValue(jsonString, User.class);
 
-                // CHECK IF USER IS ACTIVE
+                // Is user active?
                 if(newUser.isActive()) {
-                    // IF USER DON'T EXIST - ADD TO LIST AND SEND NEW LIST TO RECEIVERS
+                    // Does user exist in currentUsers? If not - add and send out!
                     if(!currentUsers.getUsers().contains(newUser)) {
                         currentUsers.addUser(newUser);
                         object = currentUsers;
-                        System.out.println("Sending new users");
                     }
                 }
-                // IF USER IS INACTIVATED - REMOVE FROM LIST
+                // If user de-activated, remove from list and out user
                 else {
                     currentUsers.removeUser(newUser);
                     object = newUser;
-                    System.out.println(newUser.getUserName());
                 }
             }
+            // IF MESSAGE
             else if(root.has("message") && root.has("date")) {
                 Message newMessage = mapper.readValue(jsonString, Message.class);
                 messageHistory.addMessage(newMessage);
@@ -61,7 +57,7 @@ public class ChatSenderProtocol {
             }
 
         } catch (JsonProcessingException e) {
-            System.out.println("Unable to map json");
+            System.out.println("ChatSenderProtocol runProtocol() - Unable to process JSON: " + e. getMessage());
         }
 
         if(object != null) {

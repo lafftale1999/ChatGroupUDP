@@ -17,16 +17,12 @@ public class ChatSenderListener{
                 socket.receive(packet);
 
                 String json = new String(packet.getData(), 0, packet.getLength());
-
-                // DEBUG
-                System.out.println(json);
-
                 protocol.runProtocol(json);
             }
         } catch (SocketException e) {
-            System.out.println("Socket failed");
+            System.out.println("ChatSenderListener Constructor() - Socket closed: " + e.getMessage());
         } catch (IOException e) {
-            System.out.println("Failed to read packet from socket");
+            System.out.println("ChatSenderListener Constructor() - failed to read from socket: " + e.getMessage());
         }
     }
 }
