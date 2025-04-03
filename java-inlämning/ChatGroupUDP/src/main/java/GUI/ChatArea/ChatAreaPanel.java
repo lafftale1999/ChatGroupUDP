@@ -16,7 +16,7 @@ public class ChatAreaPanel extends JPanel {
                 userTextArea.scrollPane
         );
 
-        splitPane.setResizeWeight(0.7);
+        splitPane.setResizeWeight(0.8);
         splitPane.setDividerSize(5);
         splitPane.setOneTouchExpandable(true);
 
