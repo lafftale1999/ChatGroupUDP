@@ -20,9 +20,12 @@ public class UserTextArea extends JTextArea {
     public void updateUsers(Users users) {
         this.setText("");
         this.setText("Users online:\n");
+
+        this.users.clear();
         for(User user : users.getUsers()) {
             this.users.add(user.getUserName());
         }
+
         this.draw();
     }
 
@@ -34,6 +37,7 @@ public class UserTextArea extends JTextArea {
     public void removeUser(User user) {
         users.remove(user.getUserName());
         this.draw();
+        System.out.println("User removed");
     }
 
     public void draw(){

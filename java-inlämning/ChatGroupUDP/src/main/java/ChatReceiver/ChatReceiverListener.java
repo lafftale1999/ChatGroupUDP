@@ -22,7 +22,7 @@ public class ChatReceiverListener extends Thread{
 
     @Override
     public void run() {
-        byte[] bytes = new byte[1024];
+        byte[] bytes = new byte[4096];
 
         while(!this.isInterrupted()) {
             try {
@@ -47,9 +47,10 @@ public class ChatReceiverListener extends Thread{
     public void setUpSocket() {
         try {
             socket = new MulticastSocket(myPort);
+            socket.setReuseAddress(true);
             InetAddress serverIp = InetAddress.getByName(serverAddressString);
             InetSocketAddress group = new InetSocketAddress(serverIp, myPort);
-            NetworkInterface nwi = NetworkInterface.getByName("wlan5");
+            NetworkInterface nwi = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
 
             socket.joinGroup(group, nwi);
         } catch (IOException e) {

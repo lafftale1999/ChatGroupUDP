@@ -29,7 +29,7 @@ public class ChatSenderProtocol {
         ObjectMapper mapper = new ObjectMapper();
         Object object = null;
 
-        System.out.println(jsonString);
+        System.out.println("In protocol: " + jsonString);
 
         try {
             JsonNode root = mapper.readTree(jsonString);
@@ -44,15 +44,15 @@ public class ChatSenderProtocol {
                     if(!currentUsers.getUsers().contains(newUser)) {
                         currentUsers.addUser(newUser);
                         object = currentUsers;
+                        System.out.println("Sending new users");
                     }
                 }
                 // IF USER IS INACTIVATED - REMOVE FROM LIST
                 else {
                     currentUsers.removeUser(newUser);
                     object = newUser;
+                    System.out.println(newUser.getUserName());
                 }
-
-                System.out.println(object.toString());
             }
             else if(root.has("message") && root.has("date")) {
                 Message newMessage = mapper.readValue(jsonString, Message.class);

@@ -30,18 +30,6 @@ public class ChatWindow extends JFrame {
         this.setLocationRelativeTo(null);
     }
 
-    public static void main(String[] args) {
-        ChatWindow window = new ChatWindow("Carl");
-
-        User user1 = new User("Carl Broman");
-        User user2 = new User("Therese Christensen");
-
-        window.chatAreaPanel.getUserTextArea().addUser(user1);
-        window.chatAreaPanel.getUserTextArea().addUser(user2);
-        window.chatAreaPanel.getChatTextArea().addMessage(new Message("Hello we are here", user1));
-        window.chatAreaPanel.getChatTextArea().addMessage(new Message("And now we are here", user2));
-    }
-
     public StopButton getStopButton() {
         return stopButton;
     }

@@ -17,6 +17,10 @@ public class ChatSenderListener{
                 socket.receive(packet);
 
                 String json = new String(packet.getData(), 0, packet.getLength());
+
+                // DEBUG
+                System.out.println(json);
+
                 protocol.runProtocol(json);
             }
         } catch (SocketException e) {

@@ -43,6 +43,7 @@ public class ChatSenderMulticast extends Thread{
 
         if(json != null) {
             String finalJson = json;
+            System.out.println("Before adding to task: " + finalJson);
             addTask(() -> sendObject(finalJson));
         }
     }
@@ -52,6 +53,7 @@ public class ChatSenderMulticast extends Thread{
         DatagramPacket packet = new DatagramPacket(bytes, bytes.length, multiCastAddress, toPort);
         try {
             socket.send(packet);
+            System.out.println("packet sent");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -23,8 +23,9 @@ public class ChatReceiver {
 
     public static void main(String[] args) {
         ChatReceiver chatReceiver = new ChatReceiver();
-        ChatReceiverSender chatReceiverSender = new ChatReceiverSender(chatReceiver.chatWindow, chatReceiver.currentUser);
         ChatReceiverListener chatReceiverListener = new ChatReceiverListener(chatReceiver.chatWindow, chatReceiver.currentUser);
         chatReceiverListener.start();
+        ChatReceiverSender chatReceiverSender = new ChatReceiverSender(chatReceiver.chatWindow, chatReceiver.currentUser);
+
     }
 }
